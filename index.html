@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>iloveinvoice — Free Online Invoice Generator | No Account Required</title>
+  <meta name="description" content="Free, open-source invoice generator. Create professional invoices, quotes, purchase orders and credit notes directly in your browser. Share by link. No account. No server. Your data never leaves your device." />
+  <meta name="keywords" content="free invoice generator, online invoice maker, invoice creator, quote generator, billing software free, freelance invoice, invoice France, invoice Germany, invoice Japan, invoice Mexico, invoice Austria, invoice Luxembourg, invoice New Zealand, facture gratuite, Rechnung erstellen, 請求書, factura gratis" />
+  <meta name="author" content="iloveinvoice" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://uolav.github.io/iloveinvoice/" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://uolav.github.io/iloveinvoice/" />
+  <meta property="og:title" content="iloveinvoice — Free Online Invoice Generator" />
+  <meta property="og:description" content="Create professional invoices in your browser. No account. No server. No data collection. Free & open source." />
+  <meta property="og:image" content="https://uolav.github.io/iloveinvoice/og-image.png" />
+  <meta property="og:locale" content="en_US" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="iloveinvoice — Free Online Invoice Generator" />
+  <meta name="twitter:description" content="Professional invoices in your browser. No account. No server. 100% private. Free & open source." />
+  <meta name="twitter:image" content="https://uolav.github.io/iloveinvoice/og-image.png" />
+
+  <!-- Hreflang -->
+  <link rel="alternate" hreflang="en" href="https://uolav.github.io/iloveinvoice/?lang=en" />
+  <link rel="alternate" hreflang="fr" href="https://uolav.github.io/iloveinvoice/?lang=fr" />
+  <link rel="alternate" hreflang="es" href="https://uolav.github.io/iloveinvoice/?lang=es" />
+  <link rel="alternate" hreflang="pt" href="https://uolav.github.io/iloveinvoice/?lang=pt" />
+  <link rel="alternate" hreflang="de" href="https://uolav.github.io/iloveinvoice/?lang=de" />
+  <link rel="alternate" hreflang="it" href="https://uolav.github.io/iloveinvoice/?lang=it" />
+  <link rel="alternate" hreflang="nl" href="https://uolav.github.io/iloveinvoice/?lang=nl" />
+  <link rel="alternate" hreflang="ja" href="https://uolav.github.io/iloveinvoice/?lang=ja" />
+  <link rel="alternate" hreflang="sv" href="https://uolav.github.io/iloveinvoice/?lang=sv" />
+  <link rel="alternate" hreflang="pl" href="https://uolav.github.io/iloveinvoice/?lang=pl" />
+  <link rel="alternate" hreflang="x-default" href="https://uolav.github.io/iloveinvoice/" />
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: { 50: '#f0f4ff', 100: '#e0eaff', 200: '#c7d2fe', 500: '#4f6ef7', 600: '#3a57e8', 700: '#2c43c7' }
+          },
+          fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] }
+        }
+      }
+    }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Roboto:wght@300;400;500;700&family=Lato:wght@300;400;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/pako@2.1.0/dist/pako.min.js"></script>
+
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "iloveinvoice",
+    "applicationCategory": "BusinessApplication",
+    "operatingSystem": "Web",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "description": "Free, open-source invoice generator. Create professional invoices, quotes, purchase orders and credit notes directly in your browser. No account required.",
+    "url": "https://uolav.github.io/iloveinvoice/",
+    "inLanguage": ["en", "fr", "es", "pt", "de", "it", "nl", "ja"],
+    "keywords": "invoice generator, free invoice, quote generator, billing, freelance"
+  }
+  </script>
+</head>
+
+<body class="bg-slate-50 dark:bg-slate-950 font-sans min-h-screen transition-colors duration-300">
+
+  <!-- ══ NAV ══════════════════════════════ -->
+  <header id="top-nav" class="sticky top-0 z-40 bg-white/90 dark:bg-slate-900/95 backdrop-blur border-b border-slate-100 dark:border-slate-700/80 shadow-sm dark:shadow-slate-900/50">
+    <div class="max-w-screen-2xl mx-auto px-5 py-2.5 flex items-center justify-between gap-3">
+
+      <div class="flex items-center gap-2.5 flex-shrink-0">
+        <div class="w-8 h-8 rounded-lg bg-brand-500 flex items-center justify-center shadow-md shadow-brand-500/30">
+          <svg class="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+          </svg>
+        </div>
+        <span class="hidden sm:inline font-bold text-slate-800 dark:text-slate-100 tracking-tight">iloveinvoice</span>
+        <span class="hidden sm:inline text-xs text-slate-400 dark:text-slate-500 bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-full font-medium"
+          data-i18n="nav_badge"></span>
+      </div>
+
+      <!-- Country selector -->
+      <div id="header-selectors" class="flex items-center flex-shrink-0">
+        <button id="btn-country-modal"
+          class="relative bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-700 rounded-xl pl-8 pr-4 py-1.5 text-xs font-semibold text-slate-700 dark:text-slate-200 cursor-pointer transition-all hover:bg-white dark:hover:bg-slate-700 hover:border-slate-200 dark:hover:border-slate-600 focus:outline-none focus:ring-2 focus:ring-brand-500/25 focus:border-brand-500 shadow-sm flex items-center justify-between min-w-[70px]">
+          <img id="country-flag" src="" alt=""
+            class="absolute left-2.5 top-1/2 -translate-y-1/2 w-4 h-3 rounded-sm object-cover pointer-events-none" />
+          <span id="country-btn-label">FR</span>
+        </button>
+
+        <!-- Language selector -->
+        <button id="btn-lang-modal"
+          class="relative bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-700 rounded-xl pl-8 pr-4 py-1.5 text-xs font-semibold text-slate-700 dark:text-slate-200 cursor-pointer transition-all hover:bg-white dark:hover:bg-slate-700 hover:border-slate-200 dark:hover:border-slate-600 focus:outline-none focus:ring-2 focus:ring-brand-500/25 focus:border-brand-500 shadow-sm flex items-center justify-between min-w-[70px] ml-2">
+          <img id="lang-flag" src="https://flagcdn.com/w40/fr.png" alt=""
+            class="absolute left-2.5 top-1/2 -translate-y-1/2 w-4 h-3 rounded-sm object-cover pointer-events-none" />
+          <span id="lang-btn-label">FR</span>
+        </button>
+      </div>
+
+      <!-- History button -->
+      <button id="btn-history"
+        class="p-2 rounded-lg text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700 transition-all duration-200 flex-shrink-0"
+        aria-label="History" title="History">
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+      </button>
+
+      <!-- Theme toggle -->
+      <button id="btn-theme-toggle"
+        class="p-2 rounded-lg text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700 transition-all duration-200 flex-shrink-0"
+        aria-label="Basculer le thème">
+        <!-- Sun icon — visible in dark mode to switch to light -->
+        <svg id="icon-sun" class="hidden w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707M17.657 17.657l-.707-.707M6.343 6.343l-.707-.707M12 7a5 5 0 100 10 5 5 0 000-10z" />
+        </svg>
+        <!-- Moon icon — visible in light mode to switch to dark -->
+        <svg id="icon-moon" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" />
+        </svg>
+      </button>
+
+      <button id="btn-share"
+        class="flex items-center gap-2 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 active:scale-95 text-slate-700 dark:text-slate-200 text-sm font-semibold px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-600 transition-all duration-150 select-none flex-shrink-0"
+        title="Share link">
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
+          <path stroke-linecap="round" stroke-linejoin="round"
+            d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+        </svg>
+        <span class="hidden sm:inline" data-i18n="btn_share"></span>
+      </button>
+      <button id="btn-download"
+        class="hidden sm:flex items-center gap-2 bg-brand-500 hover:bg-brand-600 active:scale-95 text-white text-sm font-semibold px-4 py-2 rounded-xl shadow-md shadow-brand-500/25 transition-all duration-150 select-none flex-shrink-0">
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
+          <path stroke-linecap="round" stroke-linejoin="round"
+            d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+        </svg>
+        <span class="hidden sm:inline" data-i18n="btn_download"></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ══ MAIN ══════════════════════════════ -->
+  <main class="max-w-screen-2xl mx-auto px-4 lg:px-6 py-5 flex flex-col lg:flex-row gap-6 lg:items-start">
+    <h1 class="sr-only">iloveinvoice — Free Online Invoice Generator. No account. No server. 100% private.</h1>
+
+    <!-- LEFT — FORM -->
+    <aside id="form-panel" class="w-full lg:w-[430px] xl:w-[460px] flex-shrink-0 fade-in dark:text-slate-100" style="animation-delay:.04s">
+
+      <!-- STEPPER -->
+      <div class="bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 rounded-2xl px-4 py-3.5 mb-3 shadow-sm dark:shadow-none">
+        <div id="stepper" class="flex items-center justify-between"></div>
+      </div>
+
+      <!-- .iloveinvoice toolbar -->
+      <div id="fo-toolbar">
+        <div class="tt-wrap fo-help-wrap">
+          <button class="fo-help-btn" tabindex="-1" aria-label="Aide">?</button>
+          <div class="tt-box fo-help-tip">
+            <p data-i18n="fo_tip1"></p>
+            <p data-i18n="fo_tip2"></p>
+            <p data-i18n="fo_tip3"></p>
+          </div>
+        </div>
+        <button id="fo-export-btn" class="fo-btn fo-btn-export">
+          <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+          </svg>
+          <span data-i18n="fo_export"></span>
+        </button>
+        <button id="fo-import-btn" class="fo-btn fo-btn-import">
+          <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l4-4m0 0l4 4m-4-4v12" />
+          </svg>
+          <span data-i18n="fo_import"></span>
+        </button>
+        <input id="fo-file-input" type="file" accept=".iloveinvoice,.json" />
+        <div class="relative flex-1">
+          <button id="fo-clients-btn" class="fo-btn fo-btn-clients w-full">
+            <span data-i18n="fo_clients"></span>
+            <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+          <div id="clients-dropdown" style="display:none;">
+            <div id="clients-list"></div>
+            <div id="clients-save-row">
+              <button id="clients-save-btn" data-i18n="fo_clients_save"></button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ① ÉMETTEUR -->
+      <div class="section-card open active-card" data-section="0">
+        <div class="section-header" data-toggle="0">
+          <div class="section-icon w-7 h-7 rounded-lg bg-brand-100 dark:bg-brand-900/30 flex items-center justify-center flex-shrink-0">
+            <svg class="w-3.5 h-3.5 text-brand-600 dark:text-brand-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+              stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+            </svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center gap-2">
+              <span class="text-sm font-semibold text-slate-700 dark:text-slate-200" data-i18n="s1_title"></span>
+              <span id="badge-s0"
+                class="hidden text-xs font-semibold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/30 border border-emerald-200 dark:border-emerald-800 px-1.5 py-0.5 rounded-full leading-none">✓</span>
+            </div>
+            <p class="text-xs text-slate-400 mt-0.5" data-i18n="s1_sub"></p>
+          </div>
+          <div class="flex items-center gap-2">
+            <span id="saved-badge"
+              class="hidden text-xs text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/30 border border-emerald-200 dark:border-emerald-800 px-2 py-0.5 rounded-full font-medium"
+              data-i18n="saved"></span>
+            <svg class="section-chevron w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+              stroke-width="2.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+            </svg>
+          </div>
+        </div>
+        <div class="acc-body open" id="body-s0">
+          <div class="px-4 pb-4 pt-0.5 flex flex-col gap-3">
+            <div class="fl-wrap">
+              <input id="e-name" class="fl-input" type="text" autocomplete="name" placeholder=" " />
+              <label class="fl-label" for="e-name" data-i18n="e_name"></label>
+            </div>
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <div class="fl-wrap">
+                  <input id="e-siret" class="fl-input font-mono" type="text" placeholder=" " maxlength="19"
+                    inputmode="numeric" />
+                  <label class="fl-label" for="e-siret">SIRET *</label>
+                </div>
+                <p class="fl-hint">
+                  <svg class="w-3 h-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                    stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01" />
+                  </svg>
+                  <span id="issuer-id-hint"></span>
+                </p>
+              </div>
+              <div class="fl-wrap">
+                <input id="e-email" class="fl-input" type="email" placeholder=" " autocomplete="email" />
+                <label class="fl-label" for="e-email" data-i18n="e_email">Email *</label>
+              </div>
+            </div>
+            <div class="fl-wrap is-textarea">
+              <textarea id="e-address" class="fl-input resize-none" rows="2" placeholder=" "></textarea>
+              <label class="fl-label" for="e-address" data-i18n="e_address"></label>
+            </div>
+            <div class="fl-wrap">
+              <input id="e-web" class="fl-input" type="text" placeholder=" " />
+              <label class="fl-label" for="e-web" data-i18n="e_web"></label>
+            </div>
+            <!-- Logo upload -->
+            <div>
+              <label class="text-xs font-medium text-slate-500 dark:text-slate-400 mb-1.5 block" data-i18n="logo_label"></label>
+              <div id="logo-drop-zone" class="logo-drop-zone"
+                onclick="document.getElementById('logo-file-input').click()">
+                <img id="logo-thumb-preview" class="logo-thumb hidden" src="" alt="logo" />
+                <div id="logo-drop-hint" class="flex items-center gap-2 text-slate-400">
+                  <svg class="w-5 h-5 flex-shrink-0 text-slate-300" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor" stroke-width="1.8">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4-4 4 4 4-8 4 8M3 20h18M3 4h18" />
+                  </svg>
+                  <span class="text-xs" data-i18n="logo_hint"></span>
+                </div>
+                <button id="logo-remove-btn" data-i18n="logo_remove"
+                  onclick="event.stopPropagation();removeLogo()"></button>
+              </div>
+              <input id="logo-file-input" type="file" accept="image/*" class="hidden" />
+            </div>
+            <div class="flex items-center justify-between pt-1.5 border-t border-slate-50 dark:border-slate-700">
+              <p class="text-xs text-slate-400 dark:text-slate-500 flex items-center gap-1.5">
+                <svg class="w-3.5 h-3.5 text-slate-300 dark:text-slate-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                  stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                </svg>
+                <span data-i18n="local_storage"></span>
+              </p>
+              <button id="btn-clear-emetteur"
+                class="text-xs text-slate-400 dark:text-slate-500 hover:text-red-500 transition-colors underline underline-offset-2"
+                data-i18n="clear"></button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ② CLIENT -->
+      <div class="section-card" data-section="1">
+        <div class="section-header" data-toggle="1">
+          <div class="section-icon w-7 h-7 rounded-lg bg-violet-100 dark:bg-violet-900/30 flex items-center justify-center flex-shrink-0">
+            <svg class="w-3.5 h-3.5 text-violet-600 dark:text-violet-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+              stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-2 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+            </svg>
+          </div>
+          <div class="flex-1">
+            <div class="flex items-center gap-2">
+              <span class="text-sm font-semibold text-slate-700 dark:text-slate-200" data-i18n="s2_title"></span>
+              <span id="badge-s1"
+                class="hidden text-xs font-semibold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/30 border border-emerald-200 dark:border-emerald-800 px-1.5 py-0.5 rounded-full leading-none">✓</span>
+            </div>
+            <p class="text-xs text-slate-400 mt-0.5" data-i18n="s2_sub"></p>
+          </div>
+          <svg class="section-chevron w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+          </svg>
+        </div>
+        <div class="acc-body" id="body-s1">
+          <div class="px-4 pb-4 pt-0.5 flex flex-col gap-3">
+            <div class="fl-wrap">
+              <input id="c-name" class="fl-input" type="text" placeholder=" " />
+              <label class="fl-label" for="c-name" data-i18n="c_name"></label>
+            </div>
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <div class="fl-wrap" style="position:relative;">
+                  <div style="position:absolute;right:10px;top:50%;transform:translateY(-50%);z-index:5;">
+                    <div class="tt-wrap">
+                      <svg class="w-3.5 h-3.5 text-slate-300 hover:text-brand-500 cursor-help transition-colors"
+                        fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                          d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                      <div class="tt-box" data-i18n="siren_tooltip"></div>
+                    </div>
+                  </div>
+                  <input id="c-siren" class="fl-input font-mono" type="text" placeholder=" " maxlength="11"
+                    inputmode="numeric" style="padding-right:30px;" />
+                  <label class="fl-label" for="c-siren">SIREN *</label>
+                </div>
+                <p class="fl-hint">
+                  <svg class="w-3 h-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                    stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01" />
+                  </svg>
+                  <span id="client-id-hint"></span>
+                </p>
+              </div>
+              <div class="fl-wrap">
+                <input id="c-email" class="fl-input" type="email" placeholder=" " />
+                <label class="fl-label" for="c-email" data-i18n="c_email"></label>
+              </div>
+            </div>
+            <div class="fl-wrap is-textarea">
+              <textarea id="c-billing" class="fl-input resize-none" rows="2" placeholder=" "></textarea>
+              <label class="fl-label" for="c-billing" data-i18n="c_billing"></label>
+            </div>
+            <div id="sdi-field-row" class="hidden fl-wrap">
+              <input id="c-sdi" class="fl-input font-mono" type="text" placeholder=" " maxlength="7" />
+              <label class="fl-label" for="c-sdi">Codice SDI / PEC</label>
+            </div>
+            <div class="flex items-center justify-between py-0.5">
+              <span class="text-xs font-medium text-slate-600 dark:text-slate-300" data-i18n="c_delivery_toggle"></span>
+              <label class="tog">
+                <input id="toggle-delivery" type="checkbox" />
+                <span class="tog-slider"></span>
+              </label>
+            </div>
+            <div id="delivery-field" class="hidden fl-wrap is-textarea">
+              <textarea id="c-delivery" class="fl-input resize-none" rows="2" placeholder=" " disabled></textarea>
+              <label class="fl-label" for="c-delivery" data-i18n="c_delivery"></label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ③ FACTURE -->
+      <div class="section-card" data-section="2">
+        <div class="section-header" data-toggle="2">
+          <div class="section-icon w-7 h-7 rounded-lg bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center flex-shrink-0">
+            <svg class="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+              stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+            </svg>
+          </div>
+          <div class="flex-1">
+            <div class="flex items-center gap-2">
+              <span class="text-sm font-semibold text-slate-700 dark:text-slate-200" data-i18n="s3_title"></span>
+              <span id="badge-s2"
+                class="hidden text-xs font-semibold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/30 border border-emerald-200 dark:border-emerald-800 px-1.5 py-0.5 rounded-full leading-none">✓</span>
+            </div>
+            <p class="text-xs text-slate-400 mt-0.5" data-i18n="s3_sub"></p>
+          </div>
+          <svg class="section-chevron w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+          </svg>
+        </div>
+        <div class="acc-body" id="body-s2">
+          <div class="px-4 pb-4 pt-0.5 flex flex-col gap-3">
+            <!-- Doc type toggle: Facture / Devis -->
+            <div>
+              <label class="text-xs font-medium text-slate-500 dark:text-slate-400 mb-1.5 block" data-i18n="toggle_doctype"></label>
+              <div class="doc-pill">
+                <button id="doc-btn-invoice" class="doc-pill-btn active" data-doc="invoice"
+                  data-i18n="doc_invoice"></button>
+                <button id="doc-btn-quote" class="doc-pill-btn" data-doc="quote" data-i18n="doc_quote"></button>
+                <button id="doc-btn-credit" class="doc-pill-btn" data-doc="credit" data-i18n="doc_credit"></button>
+                <button id="doc-btn-proforma" class="doc-pill-btn" data-doc="proforma" data-i18n="doc_proforma"></button>
+              </div>
+            </div>
+            <div class="grid grid-cols-2 gap-3">
+              <div class="fl-wrap">
+                <input id="inv-number" class="fl-input font-mono" type="text" placeholder=" " />
+                <label class="fl-label" for="inv-number" data-i18n="inv_number"></label>
+              </div>
+              <div style="position:relative;">
+                <div style="position:absolute;right:36px;top:50%;transform:translateY(-50%);z-index:5;">
+                  <div class="tt-wrap">
+                    <svg class="w-3.5 h-3.5 text-slate-300 hover:text-brand-500 cursor-help transition-colors"
+                      fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                      <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <div class="tt-box" data-i18n="type_tooltip"></div>
+                  </div>
+                </div>
+                <div class="fl-wrap">
+                  <select id="inv-type" class="fl-select" style="padding-right:52px;">
+                    <option value="services" data-i18n-opt="type_services"></option>
+                    <option value="goods" data-i18n-opt="type_goods"></option>
+                    <option value="mixed" data-i18n-opt="type_mixed"></option>
+                    <option value="custom" data-i18n-opt="type_custom"></option>
+                  </select>
+                  <label class="fl-label" data-i18n="inv_type"></label>
+                </div>
+                <div id="inv-type-custom-row" class="hidden fl-wrap mt-2">
+                  <input id="inv-type-custom" class="fl-input" type="text" placeholder=" " maxlength="80" />
+                  <label class="fl-label" for="inv-type-custom" data-i18n="type_custom_label"></label>
+                </div>
+              </div>
+            </div>
+            <div class="grid grid-cols-2 gap-3">
+              <div class="fl-wrap">
+                <input id="inv-date" class="fl-input" type="date" placeholder=" " />
+                <label class="fl-label" for="inv-date" data-i18n="inv_date"></label>
+              </div>
+              <div class="fl-wrap">
+                <input id="inv-due" class="fl-input" type="date" placeholder=" " />
+                <label class="fl-label" for="inv-due" data-i18n="inv_due"></label>
+              </div>
+            </div>
+            <div class="fl-wrap">
+              <input id="inv-ref" class="fl-input" type="text" placeholder=" " />
+              <label class="fl-label" for="inv-ref" data-i18n="inv_ref"></label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ④ LIGNES -->
+      <div class="section-card" data-section="3">
+        <div class="section-header" data-toggle="3">
+          <div class="section-icon w-7 h-7 rounded-lg bg-teal-100 dark:bg-teal-900/30 flex items-center justify-center flex-shrink-0">
+            <svg class="w-3.5 h-3.5 text-teal-600 dark:text-teal-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+              stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 10h16M4 14h10" />
+            </svg>
+          </div>
+          <div class="flex-1">
+            <div class="flex items-center gap-2">
+              <span class="text-sm font-semibold text-slate-700 dark:text-slate-200" data-i18n="s4_title"></span>
+              <span id="badge-s3"
+                class="hidden text-xs font-semibold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/30 border border-emerald-200 dark:border-emerald-800 px-1.5 py-0.5 rounded-full leading-none">✓</span>
+            </div>
+            <p class="text-xs text-slate-400 mt-0.5">
+              <span id="lines-count-label">0</span> <span data-i18n="s4_sub"></span><span id="lines-total-label">0,00
+                €</span>
+            </p>
+          </div>
+          <svg class="section-chevron w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+          </svg>
+        </div>
+        <div class="acc-body" id="body-s3">
+          <div class="px-4 pb-4 pt-0.5">
+            <div class="grid gap-1.5 mb-1.5" style="grid-template-columns:1fr 48px 68px 28px 28px;">
+              <span class="text-xs text-slate-400 dark:text-slate-500 font-semibold px-1" data-i18n="col_desc"></span>
+              <span class="text-xs text-slate-400 dark:text-slate-500 font-semibold text-center" data-i18n="col_qty"></span>
+              <span id="col-pu-label" class="text-xs text-slate-400 dark:text-slate-500 font-semibold text-right"></span>
+              <span></span>
+              <span></span>
+            </div>
+            <div id="lines-container" class="flex flex-col gap-1.5"></div>
+            <button id="btn-add-line" class="mt-3 w-full flex items-center justify-center gap-1.5 rounded-xl border-2 border-dashed border-slate-200 dark:border-slate-700
+                   text-slate-400 dark:text-slate-500 hover:text-brand-600 dark:hover:text-brand-400 hover:border-brand-300 dark:hover:border-brand-700 text-sm font-medium py-2.5
+                   transition-all duration-200 hover:bg-brand-50 dark:hover:bg-brand-900/20 active:scale-[.98]">
+              <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+              </svg>
+              <span data-i18n="add_line"></span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ⑤ TVA & OPTIONS -->
+      <div class="section-card" data-section="4">
+        <div class="section-header" data-toggle="4">
+          <div class="section-icon w-7 h-7 rounded-lg bg-rose-100 dark:bg-rose-900/30 flex items-center justify-center flex-shrink-0">
+            <svg class="w-3.5 h-3.5 text-rose-600 dark:text-rose-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+              stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 11h.01M12 11h.01M15 11h.01M4 19h16a1 1 0 001-1V6a1 1 0 00-1-1H4a1 1 0 00-1 1v12a1 1 0 001 1z" />
+            </svg>
+          </div>
+          <div class="flex-1">
+            <span class="text-sm font-semibold text-slate-700 dark:text-slate-200"><span id="s5-tax-name"
+                data-i18n="s5_title"></span></span>
+            <p class="text-xs text-slate-400 mt-0.5" data-i18n="s5_sub"></p>
+          </div>
+          <svg class="section-chevron w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+          </svg>
+        </div>
+        <div class="acc-body" id="body-s4">
+          <div class="px-4 pb-4 pt-0.5 flex flex-col gap-3">
+            <div id="franchise-block" class="flex items-start gap-3 p-3 rounded-xl bg-amber-50 dark:bg-amber-900/20 border border-amber-100 dark:border-amber-800/40">
+              <label class="tog tog-amber mt-0.5">
+                <input id="toggle-tva" type="checkbox" />
+                <span class="tog-slider"></span>
+              </label>
+              <div>
+                <p id="tva-franchise-title" class="text-sm font-semibold text-amber-900 dark:text-amber-300"></p>
+                <p id="tva-franchise-sub" class="text-xs text-amber-700 dark:text-amber-400 mt-0.5"></p>
+              </div>
+            </div>
+            <div id="tva-rate-row" class="fl-wrap">
+              <select id="tva-rate" class="fl-select">
+                <!-- options injected by rebuildTaxRateSelect() -->
+              </select>
+              <label class="fl-label" data-i18n="tva_rate_label"></label>
+            </div>
+            <div id="tax-custom-rate-row" class="hidden fl-wrap">
+              <input id="tax-custom-rate" class="fl-input" type="number" min="0" max="50" step="0.1" placeholder=" " />
+              <label class="fl-label" for="tax-custom-rate" data-i18n="tax_custom_rate_label"></label>
+            </div>
+            <div class="flex items-center justify-between py-1 border-t border-slate-100 dark:border-slate-700">
+              <span class="text-xs font-medium text-slate-600 dark:text-slate-300" data-i18n="tva_advanced_toggle"></span>
+              <label class="tog">
+                <input id="toggle-tva-advanced" type="checkbox" />
+                <span class="tog-slider"></span>
+              </label>
+            </div>
+            <div class="flex items-center justify-between py-1 border-t border-slate-100 dark:border-slate-700">
+              <span class="text-xs font-medium text-slate-600 dark:text-slate-300" data-i18n="discount_global_label"></span>
+              <label class="tog">
+                <input id="toggle-discount-global" type="checkbox" />
+                <span class="tog-slider"></span>
+              </label>
+            </div>
+            <div id="discount-global-controls" class="hidden flex flex-col gap-2">
+              <div class="discount-pill">
+                <button id="discount-global-mode-percent" class="discount-pill-btn active-percent" data-mode="percent">%</button>
+                <button id="discount-global-mode-fixed" class="discount-pill-btn" data-mode="fixed"></button>
+              </div>
+              <div class="fl-wrap">
+                <input id="discount-global-value" class="fl-input" type="number" min="0" step="0.1" placeholder=" " />
+                <label class="fl-label" for="discount-global-value" data-i18n="discount_global_amount"></label>
+              </div>
+            </div>
+            <div class="fl-wrap">
+              <input id="inv-payment" class="fl-input" type="text" placeholder=" " />
+              <label class="fl-label" for="inv-payment" data-i18n="inv_payment"></label>
+            </div>
+            <div class="fl-wrap is-textarea">
+              <textarea id="inv-note" class="fl-input resize-none" rows="2" placeholder=" "></textarea>
+              <label class="fl-label" for="inv-note" data-i18n="inv_note"></label>
+            </div>
+            <!-- Custom fields block -->
+            <div class="mt-2 pt-2 border-t border-slate-100 dark:border-slate-700">
+              <div class="flex items-center justify-between mb-1.5">
+                <span class="text-xs font-medium text-slate-600 dark:text-slate-300" data-i18n="custom_fields_label"></span>
+                <button id="btn-add-custom-field" class="text-xs font-semibold text-brand-600 dark:text-brand-400 hover:text-brand-700 transition-colors" data-i18n="custom_fields_add"></button>
+              </div>
+              <div id="custom-fields-list" class="flex flex-col gap-1.5"></div>
+            </div>
+            <!-- Document color block -->
+            <div class="mt-2 pt-2 border-t border-slate-100 dark:border-slate-700">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-medium text-slate-600 dark:text-slate-300" data-i18n="color_accent_label"></span>
+                <div class="flex items-center gap-1.5" id="accent-color-swatches">
+                  <button class="accent-swatch w-5 h-5 rounded-full border-2 border-white dark:border-slate-700 shadow-sm ring-1 ring-transparent hover:ring-slate-400 transition-all" data-color="#4f6ef7" style="background:#4f6ef7;" aria-label="#4f6ef7" title="Bleu (défaut)"></button>
+                  <button class="accent-swatch w-5 h-5 rounded-full border-2 border-white dark:border-slate-700 shadow-sm ring-1 ring-transparent hover:ring-slate-400 transition-all" data-color="#10b981" style="background:#10b981;" aria-label="#10b981" title="Vert"></button>
+                  <button class="accent-swatch w-5 h-5 rounded-full border-2 border-white dark:border-slate-700 shadow-sm ring-1 ring-transparent hover:ring-slate-400 transition-all" data-color="#8b5cf6" style="background:#8b5cf6;" aria-label="#8b5cf6" title="Violet"></button>
+                  <button class="accent-swatch w-5 h-5 rounded-full border-2 border-white dark:border-slate-700 shadow-sm ring-1 ring-transparent hover:ring-slate-400 transition-all" data-color="#f59e0b" style="background:#f59e0b;" aria-label="#f59e0b" title="Ambre"></button>
+                  <button class="accent-swatch w-5 h-5 rounded-full border-2 border-white dark:border-slate-700 shadow-sm ring-1 ring-transparent hover:ring-slate-400 transition-all" data-color="#ef4444" style="background:#ef4444;" aria-label="#ef4444" title="Rouge"></button>
+                  <button class="accent-swatch w-5 h-5 rounded-full border-2 border-white dark:border-slate-700 shadow-sm ring-1 ring-transparent hover:ring-slate-400 transition-all" data-color="#0ea5e9" style="background:#0ea5e9;" aria-label="#0ea5e9" title="Bleu ciel"></button>
+                  <button class="accent-swatch w-5 h-5 rounded-full border-2 border-white dark:border-slate-700 shadow-sm ring-1 ring-transparent hover:ring-slate-400 transition-all" data-color="#64748b" style="background:#64748b;" aria-label="#64748b" title="Ardoise"></button>
+                  <label class="accent-swatch w-5 h-5 rounded-full border-2 border-white dark:border-slate-700 shadow-sm ring-1 ring-transparent hover:ring-slate-400 transition-all overflow-hidden cursor-pointer" title="Couleur personnalisée" style="background:conic-gradient(red,yellow,lime,cyan,blue,magenta,red);">
+                    <input id="accent-color-custom" type="color" class="opacity-0 w-0 h-0 absolute" />
+                  </label>
+                </div>
+              </div>
+            </div>
+            <!-- Document font block -->
+            <div class="mt-2 pt-2 border-t border-slate-100 dark:border-slate-700">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-medium text-slate-600 dark:text-slate-300" data-i18n="font_label"></span>
+                <div class="flex items-center gap-1" id="font-swatches">
+                  <button class="font-swatch text-[10px] font-semibold px-2 py-0.5 rounded-md border border-slate-200 dark:border-slate-600 text-slate-600 dark:text-slate-300 hover:border-brand-400 transition-all" data-font="Inter" style="font-family:Inter,sans-serif;">Inter</button>
+                  <button class="font-swatch text-[10px] font-semibold px-2 py-0.5 rounded-md border border-slate-200 dark:border-slate-600 text-slate-600 dark:text-slate-300 hover:border-brand-400 transition-all" data-font="Roboto" style="font-family:Roboto,sans-serif;">Roboto</button>
+                  <button class="font-swatch text-[10px] font-semibold px-2 py-0.5 rounded-md border border-slate-200 dark:border-slate-600 text-slate-600 dark:text-slate-300 hover:border-brand-400 transition-all" data-font="Lato" style="font-family:Lato,sans-serif;">Lato</button>
+                  <button class="font-swatch text-[10px] font-semibold px-2 py-0.5 rounded-md border border-slate-200 dark:border-slate-600 text-slate-600 dark:text-slate-300 hover:border-brand-400 transition-all" data-font="Poppins" style="font-family:Poppins,sans-serif;">Poppins</button>
+                </div>
+              </div>
+            </div>
+            <!-- Template selector -->
+            <div class="mt-2 pt-2 border-t border-slate-100 dark:border-slate-700">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-medium text-slate-600 dark:text-slate-300" data-i18n="template_label"></span>
+                <div class="flex items-center gap-1" id="template-swatches">
+                  <button class="tpl-swatch text-[10px] font-semibold px-2 py-0.5 rounded-md border border-slate-200 dark:border-slate-600 text-slate-600 dark:text-slate-300 hover:border-brand-400 transition-all" data-tpl="modern">Modern</button>
+                  <button class="tpl-swatch text-[10px] font-semibold px-2 py-0.5 rounded-md border border-slate-200 dark:border-slate-600 text-slate-600 dark:text-slate-300 hover:border-brand-400 transition-all" data-tpl="classic">Classic</button>
+                  <button class="tpl-swatch text-[10px] font-semibold px-2 py-0.5 rounded-md border border-slate-200 dark:border-slate-600 text-slate-600 dark:text-slate-300 hover:border-brand-400 transition-all" data-tpl="bold">Bold</button>
+                  <button class="tpl-swatch text-[10px] font-semibold px-2 py-0.5 rounded-md border border-slate-200 dark:border-slate-600 text-slate-600 dark:text-slate-300 hover:border-brand-400 transition-all" data-tpl="compact">Compact</button>
+                </div>
+              </div>
+            </div>
+            <!-- Deposit block -->
+            <div class="flex items-center justify-between py-1 mt-1 border-t border-slate-100 dark:border-slate-700">
+              <span class="text-xs font-medium text-slate-600 dark:text-slate-300" data-i18n="deposit_toggle"></span>
+              <label class="tog">
+                <input id="toggle-deposit" type="checkbox" />
+                <span class="tog-slider"></span>
+              </label>
+            </div>
+            <div id="deposit-controls" class="hidden flex flex-col gap-3">
+              <div class="deposit-pill">
+                <button id="deposit-mode-percent" class="deposit-pill-btn active-percent" data-mode="percent"
+                  data-i18n="deposit_mode_percent"></button>
+                <button id="deposit-mode-fixed" class="deposit-pill-btn" data-mode="fixed"
+                  data-i18n="deposit_mode_fixed"></button>
+              </div>
+              <div class="fl-wrap">
+                <input id="deposit-value" class="fl-input" type="number" min="0" step="0.1" placeholder=" " />
+                <label id="deposit-label" class="fl-label" for="deposit-value" data-i18n="deposit_value"></label>
+              </div>
+            </div>
+            <!-- Watermark selector -->
+            <div>
+              <label class="text-xs font-medium text-slate-500 dark:text-slate-400 mb-1.5 block" data-i18n="wm_label"></label>
+              <div class="wm-pill">
+                <button id="wm-btn-none" class="wm-pill-btn active-none" data-wm="none" data-i18n="wm_none"></button>
+                <button id="wm-btn-draft" class="wm-pill-btn" data-wm="draft" data-i18n="wm_draft"></button>
+                <button id="wm-btn-paid" class="wm-pill-btn" data-wm="paid" data-i18n="wm_paid"></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CTA sticky -->
+      <div id="cta-sticky" class="flex flex-col gap-3">
+        <!-- Ko-fi Widget — disabled temporarily
+        <div class="w-full hover:opacity-90 transition-opacity">
+          <script type='text/javascript' src='https://storage.ko-fi.com/cdn/widget/Widget_2.js'></script>
+          <script
+            type='text/javascript'>kofiwidget2.init('Support me on Ko-fi', '#72a4f2', 'N4N81VEC2X'); kofiwidget2.draw();</script>
+        </div>
+        -->
+        <div class="flex gap-2 w-full">
+          <button id="btn-share-panel"
+            class="flex items-center justify-center bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 active:scale-[.98] text-slate-700 dark:text-slate-200 py-3.5 px-4 rounded-2xl border border-slate-200 dark:border-slate-600 transition-all flex-shrink-0"
+            title="Share link">
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+            </svg>
+          </button>
+          <button id="btn-email-panel"
+            class="flex items-center justify-center bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 active:scale-[.98] text-slate-700 dark:text-slate-200 py-3.5 px-4 rounded-2xl border border-slate-200 dark:border-slate-600 transition-all flex-shrink-0"
+            title="Send by email">
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+            </svg>
+          </button>
+          <button id="btn-download-panel"
+            class="flex-1 flex items-center justify-center gap-2 bg-brand-500 hover:bg-brand-600 active:scale-[.98] text-white font-semibold py-3.5 rounded-2xl shadow-lg shadow-brand-500/30 text-sm transition-all">
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+            </svg>
+            <span data-i18n="btn_download_full"></span>
+          </button>
+        </div>
+      </div>
+
+    </aside>
+
+    <!-- RIGHT — PREVIEW A4 -->
+    <section class="flex-1 min-w-0 fade-in" style="animation-delay:.12s">
+      <div class="sticky top-[53px] z-30 bg-slate-50 dark:bg-slate-950 pb-3 flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <span class="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></span>
+          <span class="text-xs font-medium text-slate-500 dark:text-slate-400" data-i18n="preview_live"></span>
+          <span class="hidden dark:inline text-xs text-slate-400 dark:text-slate-500" data-i18n="pdf_white_notice"></span>
+        </div>
+        <span class="text-xs text-slate-400 dark:text-slate-500" data-i18n="preview_format"></span>
+      </div>
+      <div class="overflow-hidden">
+        <div id="preview-scaler" class="mx-auto" style="width:794px;">
+          <div id="pages-container" style="display:flex;flex-direction:column;gap:12px;"></div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="w-full mt-8 pb-6 flex justify-center">
+    <a href="https://github.com/uolaV" target="_blank" rel="noopener noreferrer" class="group inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-100 hover:border-slate-400 dark:hover:border-slate-500 transition-all duration-200 text-xs font-medium select-none">
+      <svg class="w-3.5 h-3.5 opacity-60 group-hover:opacity-100 transition-opacity" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <path d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.009-.868-.013-1.703-2.782.604-3.369-1.342-3.369-1.342-.454-1.154-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0 1 12 6.836a9.59 9.59 0 0 1 2.504.337c1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.741 0 .267.18.579.688.481C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z"/>
+      </svg>
+      <span>Made by <span class="font-semibold text-slate-700 dark:text-slate-200 group-hover:text-[var(--c-brand)] transition-colors">uolaV</span></span>
+    </a>
+  </footer>
+
+  <!-- TOAST -->
+  <div id="toast" role="status" aria-live="polite" aria-atomic="true">
+    <div class="flex items-center gap-2 bg-slate-800 dark:bg-slate-700 text-white text-sm font-medium px-4 py-3 rounded-xl shadow-xl dark:shadow-black/40 dark:border dark:border-slate-600">
+      <svg class="w-4 h-4 text-emerald-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+        stroke-width="2.5" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+      </svg>
+      <span id="toast-msg"></span>
+    </div>
+  </div>
+
+  <!-- COUNTRY MODAL -->
+  <div id="country-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4">
+    <div id="country-modal-backdrop"
+      class="absolute inset-0 bg-slate-900/40 backdrop-blur-sm transition-opacity opacity-0 cursor-pointer"></div>
+    <div id="country-modal-content"
+      class="relative bg-white dark:bg-slate-800 rounded-2xl w-full max-w-sm shadow-2xl dark:shadow-black/60 scale-95 opacity-0 transition-all duration-300 flex flex-col max-h-[85vh] dark:border dark:border-slate-700">
+      <div class="p-4 border-b border-slate-100 dark:border-slate-700 flex items-center justify-between shrink-0">
+        <h3 class="font-bold text-slate-800 dark:text-slate-100 text-sm" data-i18n="select_country">Pays et Fiscalité</h3>
+        <button id="btn-close-country-modal"
+          class="w-7 h-7 flex items-center justify-center rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-400 dark:text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-600 transition-colors cursor-pointer">
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+      <div class="px-3 pt-2 pb-1 shrink-0 relative z-20 bg-white dark:bg-slate-800">
+        <input id="country-search" type="text" autocomplete="off" spellcheck="false"
+          class="w-full px-3 py-2 text-sm rounded-lg border border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 text-slate-800 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 outline-none focus:border-brand-400 dark:focus:border-brand-500 focus:ring-1 focus:ring-brand-400/30 transition-colors"
+          data-i18n-placeholder="search_country" placeholder="Rechercher un pays..." />
+      </div>
+      <div id="country-modal-list" class="px-2 pb-2 overflow-y-auto flex-1 grid gap-1 dark:bg-slate-800">
+        <!-- injected by JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- LANGUAGE MODAL -->
+  <div id="lang-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4">
+    <div id="lang-modal-backdrop"
+      class="absolute inset-0 bg-slate-900/40 backdrop-blur-sm transition-opacity opacity-0 cursor-pointer"></div>
+    <div id="lang-modal-content"
+      class="relative bg-white dark:bg-slate-800 rounded-2xl w-full max-w-xs shadow-2xl dark:shadow-black/60 scale-95 opacity-0 transition-all duration-300 flex flex-col max-h-[85vh] dark:border dark:border-slate-700">
+      <div class="p-4 border-b border-slate-100 dark:border-slate-700 flex items-center justify-between shrink-0">
+        <h3 class="font-bold text-slate-800 dark:text-slate-100 text-sm" data-i18n="select_lang">Langue d'affichage</h3>
+        <button id="btn-close-lang-modal"
+          class="w-7 h-7 flex items-center justify-center rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-400 dark:text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-600 transition-colors cursor-pointer">
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+      <div id="lang-modal-list" class="p-2 overflow-y-auto flex-1 grid gap-1 dark:bg-slate-800">
+        <!-- injected by buildLangSelect() -->
+      </div>
+    </div>
+  </div>
+
+  <!-- HISTORY MODAL -->
+  <div id="history-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4">
+    <div id="history-modal-backdrop"
+      class="absolute inset-0 bg-slate-900/40 backdrop-blur-sm transition-opacity opacity-0 cursor-pointer"></div>
+    <div id="history-modal-content"
+      class="relative bg-white dark:bg-slate-800 rounded-2xl w-full max-w-lg shadow-2xl dark:shadow-black/60 scale-95 opacity-0 transition-all duration-300 flex flex-col max-h-[85vh] dark:border dark:border-slate-700">
+      <div class="p-4 border-b border-slate-100 dark:border-slate-700 flex items-center justify-between shrink-0">
+        <h3 class="font-bold text-slate-800 dark:text-slate-100 text-sm" data-i18n="history_title">History</h3>
+        <button id="btn-close-history-modal"
+          class="w-7 h-7 flex items-center justify-center rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-400 dark:text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-600 transition-colors cursor-pointer">
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+      <div class="px-3 pt-2.5 pb-1.5 border-b border-slate-100 dark:border-slate-700 shrink-0">
+        <input id="history-search" type="search" placeholder="Rechercher…"
+          class="w-full text-sm px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 text-slate-800 dark:text-slate-100 outline-none focus:ring-2 focus:ring-brand-400 dark:focus:ring-brand-600 placeholder-slate-400 dark:placeholder-slate-500" />
+      </div>
+      <div id="history-modal-list" class="p-3 overflow-y-auto flex-1 flex flex-col gap-2 dark:bg-slate-800">
+        <!-- injected by JS -->
+      </div>
+      <div class="px-3 py-2.5 border-t border-slate-100 dark:border-slate-700 shrink-0">
+        <button id="btn-export-history-csv"
+          class="w-full flex items-center justify-center gap-2 text-xs font-medium text-slate-500 dark:text-slate-400 hover:text-brand-600 dark:hover:text-brand-400 hover:bg-slate-50 dark:hover:bg-slate-700 rounded-lg py-1.5 transition-colors">
+          <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+          </svg>
+          <span data-i18n="history_export_csv">Export CSV</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="countries.js" defer></script>
+  <script src="app.js" defer></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('sw.js').catch(() => {});
+    }
+  </script>
+</body>
+
+</html>
