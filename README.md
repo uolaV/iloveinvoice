@@ -35,7 +35,7 @@ Most invoice generators require an account, store your data on their servers, or
 | **Privacy** | 100% local | Your data on their servers |
 | **Account required** | No | Yes |
 | **Offline support** | Yes | No |
-| **Open source** | MIT | Proprietary |
+| **Open source** | CC BY 4.0 | Proprietary |
 | **Ads** | None | Usually |
 
 <br>
