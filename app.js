@@ -2992,6 +2992,9 @@
         if (cycleBtn) return cycleStatus(cycleBtn.dataset.cycleStatus);
       });
 
+      // Logo remove button
+      $('logo-remove-btn').addEventListener('click', e => { e.stopPropagation(); removeLogo(); });
+
       // Logo file input
       $('logo-file-input').addEventListener('change', function () {
         const file = this.files[0];
