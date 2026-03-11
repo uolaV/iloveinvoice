@@ -895,6 +895,22 @@
         clearTimeout(el._t);
         el._t = setTimeout(() => el.classList.remove('show'), dur);
       }
+      // ── CDN URLs ────────────────────────────────────────────
+      const CDN_HTML2PDF = 'https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js';
+      const CDN_PAKO     = 'https://cdn.jsdelivr.net/npm/pako@2.1.0/dist/pako.min.js';
+      const _loadedScripts = {};
+      function loadScript(src) {
+        if (_loadedScripts[src]) return _loadedScripts[src];
+        _loadedScripts[src] = new Promise((resolve, reject) => {
+          const s = document.createElement('script');
+          s.src = src;
+          s.onload = resolve;
+          s.onerror = () => reject(new Error(`Failed to load: ${src}`));
+          document.head.appendChild(s);
+        });
+        return _loadedScripts[src];
+      }
+
       function esc(s) {
         return String(s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/'/g, '&#39;');
       }
@@ -1642,6 +1658,7 @@
       ══════════════════════════════════════════ */
       async function downloadPDF() {
         if (!val('e-name') || !val('inv-number')) { toast(t('toast_valid'), 4000); return; }
+        await loadScript(CDN_HTML2PDF);
         // We cover the page with an overlay matching the current background to hide the theme flash.
         const wasDark = document.documentElement.classList.contains('dark');
         let pdfOverlay = null;
@@ -2571,7 +2588,8 @@
       }
 
       /* ── Share link ── */
-      function generateShareLink() {
+      async function generateShareLink() {
+        await loadScript(CDN_PAKO);
         const state = collectState();
         // Remove logo from shared data to keep URL shorter
         const shareState = JSON.parse(JSON.stringify(state));
@@ -2601,7 +2619,8 @@
         });
       }
 
-      function sendByEmail() {
+      async function sendByEmail() {
+        await loadScript(CDN_PAKO);
         const name = val('e-name') || '';
         const num = val('inv-number') || '';
         const clientEmail = val('c-email') || '';
@@ -2628,10 +2647,11 @@
         window.location.href = `mailto:${encodeURIComponent(clientEmail)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
       }
 
-      function loadFromShareLink() {
+      async function loadFromShareLink() {
         const params = new URLSearchParams(window.location.search);
         const data = params.get('data');
         if (!data) return false;
+        await loadScript(CDN_PAKO);
         try {
           const b64 = data.replace(/-/g, '+').replace(/_/g, '/');
           const padded = b64 + '='.repeat((4 - b64.length % 4) % 4);
@@ -3598,7 +3618,7 @@
         // Check for shared invoice link (?data=...)
         const hasShareData = new URLSearchParams(window.location.search).has('data');
         if (hasShareData) {
-          loadFromShareLink();
+          loadFromShareLink(); // async — intentional fire-and-forget in init
         }
 
         // Check localStorage quota and warn if approaching limit
