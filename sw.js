@@ -1,4 +1,4 @@
-const CACHE = 'iloveinvoice-v4';
+const CACHE = 'iloveinvoice-v5';
 const ASSETS = [
   '/',
   '/index.html',
@@ -7,8 +7,7 @@ const ASSETS = [
   '/app.js',
   'https://cdn.tailwindcss.com',
   'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap',
-  'https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js',
-  'https://cdn.jsdelivr.net/npm/pako@2.1.0/dist/pako.min.js',
+  // html2pdf and pako are lazy-loaded on first use — cached automatically by fetch handler
 ];
 
 self.addEventListener('install', e => {
