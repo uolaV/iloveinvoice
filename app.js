@@ -885,7 +885,7 @@
       function suggestInvoiceNumber() {
         const now = new Date();
         const y = now.getFullYear(), m = String(now.getMonth() + 1).padStart(2, '0');
-        const seq = parseInt(localStorage.getItem(`invoice_seq_${y}_${m}`) || '0') + 1;
+        const seq = parseInt(localStorage.getItem(`iloveinvoice_seq_${y}_${m}`) || '0') + 1;
         return `${y}-${m}-${String(seq).padStart(3, '0')}`;
       }
       function toast(msg, dur = 3200) {
@@ -896,7 +896,7 @@
         el._t = setTimeout(() => el.classList.remove('show'), dur);
       }
       function esc(s) {
-        return String(s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        return String(s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/'/g, '&#39;');
       }
       function calcLineAmount(ln) {
         const base = (parseFloat(ln.qty) || 0) * (parseFloat(ln.pu) || 0);
@@ -1655,7 +1655,7 @@
 
         const dateVal = val('inv-date');
         if (dateVal) {
-          const [y, m] = dateVal.split('-'), key = `invoice_seq_${y}_${m}`;
+          const [y, m] = dateVal.split('-'), key = `iloveinvoice_seq_${y}_${m}`;
           localStorage.setItem(key, String(parseInt(localStorage.getItem(key) || '0') + 1));
         }
 
@@ -1693,16 +1693,22 @@
             jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
           };
 
-          if (pageEls.length === 1) {
-            await html2pdf().set({ ...opt, filename }).from(pageEls[0]).save();
-          } else {
-            // Multi-page via html2pdf worker API
-            let worker = html2pdf().set({ ...opt, filename }).from(pageEls[0]).toPdf();
-            for (let i = 1; i < pageEls.length; i++) {
-              worker = worker.get('pdf').then(pdf => { pdf.addPage(); }).from(pageEls[i]).toContainer().toCanvas().toPdf();
-            }
-            await worker.save();
-          }
+          const PDF_TIMEOUT_MS = 30_000;
+          const timeout = new Promise((_, reject) =>
+            setTimeout(() => reject(new Error('PDF timeout')), PDF_TIMEOUT_MS)
+          );
+
+          const pdfWork = pageEls.length === 1
+            ? html2pdf().set({ ...opt, filename }).from(pageEls[0]).save()
+            : (() => {
+                let worker = html2pdf().set({ ...opt, filename }).from(pageEls[0]).toPdf();
+                for (let i = 1; i < pageEls.length; i++) {
+                  worker = worker.get('pdf').then(pdf => { pdf.addPage(); }).from(pageEls[i]).toContainer().toCanvas().toPdf();
+                }
+                return worker.save();
+              })();
+
+          await Promise.race([pdfWork, timeout]);
 
           document.body.removeChild(renderWrapper);
           toast(t('toast_ok').replace('{f}', filename));

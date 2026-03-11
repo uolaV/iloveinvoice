@@ -1,4 +1,4 @@
-const CACHE = 'iloveinvoice-v3';
+const CACHE = 'iloveinvoice-v4';
 const ASSETS = [
   '/',
   '/index.html',
