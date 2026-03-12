@@ -848,7 +848,7 @@
         } catch { return []; }
       }
       function saveCatalog(items) {
-        try { localStorage.setItem(LS_CATALOG, JSON.stringify(items.slice(0, 50))); } catch { }
+        safeSetItem(LS_CATALOG, JSON.stringify(items.slice(0, 50)));
       }
       function addToCatalog(desc, unit, pu) {
         if (!desc || !desc.trim()) return;
@@ -894,6 +894,22 @@
         el.classList.add('show');
         clearTimeout(el._t);
         el._t = setTimeout(() => el.classList.remove('show'), dur);
+      }
+      function safeSetItem(key, value) {
+        try {
+          localStorage.setItem(key, value);
+          return true;
+        } catch (e) {
+          if (e instanceof DOMException && (
+            e.code === 22 || e.code === 1014 ||
+            e.name === 'QuotaExceededError' ||
+            e.name === 'NS_ERROR_DOM_QUOTA_REACHED'
+          )) {
+            toast('⚠️ Stockage plein — supprimez des factures ou le logo pour libérer de l\'espace.', 5000);
+            console.warn('[iloveinvoice] localStorage quota exceeded for key:', key);
+          }
+          return false;
+        }
       }
       // ── CDN URLs ────────────────────────────────────────────
       const CDN_HTML2PDF = 'https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js';
@@ -958,7 +974,7 @@
       const LS = 'iloveinvoice_emetteur_v1';
 
       function saveEmetteur() {
-        localStorage.setItem(LS, JSON.stringify({
+        safeSetItem(LS, JSON.stringify({
           name: val('e-name'), siret: val('e-siret'), email: val('e-email'), address: val('e-address'), web: val('e-web'),
           logo: logoB64 || null, country: country
         }));
@@ -1688,7 +1704,7 @@
         const dateVal = val('inv-date');
         if (dateVal) {
           const [y, m] = dateVal.split('-'), key = `iloveinvoice_seq_${y}_${m}`;
-          localStorage.setItem(key, String(parseInt(localStorage.getItem(key) || '0') + 1));
+          safeSetItem(key, String(parseInt(localStorage.getItem(key) || '0') + 1));
         }
 
         const spin = `<svg class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"/></svg> ${t('toast_gen')}`;
@@ -1977,7 +1993,7 @@
       function addRecentCountry(code) {
         const recent = getRecentCountries().filter(c => c !== code);
         recent.unshift(code);
-        localStorage.setItem('iloveinvoice_recent_countries', JSON.stringify(recent.slice(0, 5)));
+        safeSetItem('iloveinvoice_recent_countries', JSON.stringify(recent.slice(0, 5)));
       }
 
       function countryItemHTML(code, cfg) {
@@ -2715,7 +2731,7 @@
       function loadHistory() {
         try { return JSON.parse(localStorage.getItem(LS_HISTORY)) || []; } catch { return []; }
       }
-      function saveHistory(arr) { localStorage.setItem(LS_HISTORY, JSON.stringify(arr.slice(0, HISTORY_MAX))); }
+      function saveHistory(arr) { safeSetItem(LS_HISTORY, JSON.stringify(arr.slice(0, HISTORY_MAX))); }
 
       function saveToHistory() {
         const state = collectState();
@@ -2896,7 +2912,7 @@
       function loadClients() {
         try { return JSON.parse(localStorage.getItem(LS_CLIENTS)) || []; } catch { return []; }
       }
-      function saveClients(arr) { localStorage.setItem(LS_CLIENTS, JSON.stringify(arr.slice(0, 8))); }
+      function saveClients(arr) { safeSetItem(LS_CLIENTS, JSON.stringify(arr.slice(0, 8))); }
 
       function saveCurrentClient() {
         const name = val('c-name');
@@ -3469,7 +3485,7 @@
 
       function toggleTheme() {
         const isDark = document.documentElement.classList.toggle('dark');
-        localStorage.setItem('iloveinvoice_theme', isDark ? 'dark' : 'light');
+        safeSetItem('iloveinvoice_theme', isDark ? 'dark' : 'light');
         updateThemeIcons(isDark);
       }
 
@@ -3555,7 +3571,7 @@
           if (prevEl) prevEl.classList.remove('onboarding-highlight');
           backdrop.remove();
           tooltip.remove();
-          localStorage.setItem('iloveinvoice_onboarded', '1');
+          safeSetItem('iloveinvoice_onboarded', '1');
         }
 
         function showStep() {
