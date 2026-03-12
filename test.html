@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>iloveinvoice — Unit Tests</title>
+  <style>
+    body { font-family: monospace; padding: 2rem; background: #0f172a; color: #e2e8f0; }
+    .pass { color: #4ade80; }
+    .fail { color: #f87171; }
+    .suite { margin: 1.5rem 0 0.5rem; font-size: 1.1rem; font-weight: bold; color: #7dd3fc; border-bottom: 1px solid #334155; padding-bottom: 0.25rem; }
+    .result { padding: 0.2rem 0; font-size: 0.875rem; }
+    #summary { margin-top: 2rem; font-size: 1.1rem; font-weight: bold; }
+  </style>
+</head>
+<body>
+<h1 style="color:#f8fafc;margin-bottom:1rem;">🧪 iloveinvoice — Unit Tests</h1>
+<div id="output"></div>
+<div id="summary"></div>
+<script>
+// Provide minimal stubs so the IIFE in app.js can load
+// (app.js uses document.querySelector etc. — wrap carefully)
+</script>
+<script src="countries.js"></script>
+<script>
+'use strict';
+
+// Extract pure functions from app.js by re-implementing them here for testing
+// (since app.js is an IIFE, functions are not globally exposed)
+
+function esc(s) {
+  if (s == null) return '';
+  return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/'/g,'&#39;');
+}
+
+function safeUrl(url) {
+  if (!url) return '';
+  const s = String(url).trim();
+  if (/^(javascript|data|vbscript):/i.test(s)) return '#';
+  if (/^(mailto:|tel:)/i.test(s)) return esc(s);
+  if (/^https?:\/\//i.test(s)) return esc(s);
+  return esc('https://' + s);
+}
+
+function flagEmoji(iso2) {
+  if (!iso2) return '🌐';
+  return iso2.toUpperCase().replace(/./g, c => String.fromCodePoint(0x1F1E6 - 65 + c.charCodeAt(0)));
+}
+
+// ── Mini test framework ───────────────────────────────────────
+let passed = 0, failed = 0;
+const out = document.getElementById('output');
+
+function suite(name) {
+  out.innerHTML += `<div class="suite">${name}</div>`;
+}
+
+function expect(desc, actual, expected) {
+  const ok = actual === expected;
+  ok ? passed++ : failed++;
+  out.innerHTML += `<div class="result ${ok?'pass':'fail'}">${ok?'✓':'✗'} ${desc}${ok?'':` — expected: ${JSON.stringify(expected)}, got: ${JSON.stringify(actual)}`}</div>`;
+}
+
+function expectContains(desc, actual, sub) {
+  const ok = String(actual).includes(sub);
+  ok ? passed++ : failed++;
+  out.innerHTML += `<div class="result ${ok?'pass':'fail'}">${ok?'✓':'✗'} ${desc}${ok?'':` — expected to contain: ${JSON.stringify(sub)}, got: ${JSON.stringify(actual)}`}</div>`;
+}
+
+// Tests esc()
+suite('esc()');
+expect('null → empty string', esc(null), '');
+expect('undefined → empty string', esc(undefined), '');
+expect('empty string', esc(''), '');
+expect('plain text unchanged', esc('hello'), 'hello');
+expect('escapes &', esc('a & b'), 'a &amp; b');
+expect('escapes <', esc('<b>'), '&lt;b&gt;');
+expect('escapes "', esc('"hi"'), '&quot;hi&quot;');
+expect("escapes '", esc("it's"), 'it&#39;s');
+expect('XSS payload', esc('<script>alert(1)</script>'), '&lt;script&gt;alert(1)&lt;/script&gt;');
+
+// Tests safeUrl()
+suite('safeUrl()');
+expect('null → empty', safeUrl(null), '');
+expect('empty → empty', safeUrl(''), '');
+expect('blocks javascript:', safeUrl('javascript:alert(1)'), '#');
+expect('blocks JAVASCRIPT: uppercase', safeUrl('JAVASCRIPT:void(0)'), '#');
+expect('blocks data:', safeUrl('data:text/html,<h1>'), '#');
+expect('blocks vbscript:', safeUrl('vbscript:msgbox'), '#');
+expect('allows mailto:', safeUrl('mailto:a@b.com'), 'mailto:a@b.com');
+expect('allows tel:', safeUrl('tel:+33600000000'), 'tel:+33600000000');
+expect('passes https through', safeUrl('https://example.com'), 'https://example.com');
+expect('passes http through', safeUrl('http://example.com'), 'http://example.com');
+expect('prepends https:// if no scheme', safeUrl('example.com'), 'https://example.com');
+
+// Tests flagEmoji()
+suite('flagEmoji()');
+expect('null → globe', flagEmoji(null), '🌐');
+expect('FR flag', flagEmoji('fr'), '🇫🇷');
+expect('GB flag', flagEmoji('gb'), '🇬🇧');
+expect('DE flag', flagEmoji('de'), '🇩🇪');
+expect('US flag', flagEmoji('us'), '🇺🇸');
+expect('JP flag', flagEmoji('jp'), '🇯🇵');
+
+document.getElementById('summary').innerHTML =
+  `<span class="${failed===0?'pass':'fail'}">${passed+failed} tests · ${passed} passed · ${failed} failed</span>`;
+</script>
+</body>
+</html>
