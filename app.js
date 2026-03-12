@@ -3405,6 +3405,16 @@
       });
 
       // Font picker
+      const _loadedFonts = new Set();
+      function ensureFontLoaded(name) {
+        if (_loadedFonts.has(name)) return;
+        _loadedFonts.add(name);
+        const weights = name === 'Poppins' ? '300;400;500;600;700' : '300;400;500;700';
+        const link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.href = `https://fonts.googleapis.com/css2?family=${encodeURIComponent(name)}:wght@${weights}&display=swap`;
+        document.head.appendChild(link);
+      }
       function updateFontSwatchUI() {
         document.querySelectorAll('.font-swatch').forEach(sw => {
           const active = sw.dataset.font === invFont;
@@ -3416,6 +3426,7 @@
       document.querySelectorAll('.font-swatch').forEach(sw => {
         sw.addEventListener('click', () => {
           invFont = sw.dataset.font;
+          if (invFont !== 'Inter') ensureFontLoaded(invFont);
           updateFontSwatchUI();
           renderPreview();
         });
