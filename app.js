@@ -955,11 +955,12 @@
         if (/^https?:\/\//i.test(s)) return esc(s);
         return esc('https://' + s);
       }
-      function flagEmoji(iso2) {
-        if (!iso2) return '🌐';
-        return iso2.toUpperCase().replace(/./g,
-          c => String.fromCodePoint(0x1F1E6 - 65 + c.charCodeAt(0))
-        );
+      function flagImg(iso2, cls) {
+        if (!iso2) return '<span>🌐</span>';
+        const code = iso2.toLowerCase();
+        const upper = iso2.toUpperCase();
+        const c = cls || 'w-5 rounded object-cover shadow-sm pointer-events-none';
+        return `<img src="https://flagcdn.com/w40/${code}.png" alt="${upper}" class="${c}" loading="lazy" onerror="this.outerHTML='<span class=\\'text-xs font-mono opacity-60\\'>${upper}</span>'" />`;
       }
       function calcLineAmount(ln) {
         const base = (parseFloat(ln.qty) || 0) * (parseFloat(ln.pu) || 0);
@@ -1920,7 +1921,7 @@
         if (langCfg) {
           const lf = $('lang-flag');
           const ll = $('lang-btn-label');
-          if (lf) lf.textContent = flagEmoji(langCfg.flag);
+          if (lf) lf.innerHTML = flagImg(langCfg.flag, 'w-6 rounded object-cover shadow-sm pointer-events-none');
           if (ll) ll.textContent = lang.toUpperCase();
         }
 
@@ -2015,7 +2016,7 @@
       function countryItemHTML(code, cfg) {
         const check = country === code ? '<svg class="w-5 h-5 text-brand-500 pointer-events-none shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>' : '';
         return `<div class="country-modal-item flex items-center gap-3 p-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-700 cursor-pointer transition-colors border border-transparent hover:border-slate-100 dark:hover:border-slate-600" data-code="${code}" data-name="${cfg.name.toLowerCase()}" data-search="${code.toLowerCase()} ${cfg.name.toLowerCase()} ${cfg.currency.toLowerCase()} ${cfg.taxName.toLowerCase()}">
-          <span class="pointer-events-none text-xl leading-none">${flagEmoji(cfg.flag)}</span>
+          ${flagImg(cfg.flag, 'w-6 h-4 rounded object-cover shadow-sm pointer-events-none shrink-0')}
           <div class="flex-1 pointer-events-none min-w-0">
             <div class="text-sm font-semibold text-slate-800 dark:text-slate-100 truncate">${cfg.name}</div>
             <div class="text-[10px] text-slate-400 dark:text-slate-500 font-medium">${cfg.currencySymbol} \u00b7 ${cfg.taxName}</div>
@@ -2126,7 +2127,7 @@
         if (!list) return;
         list.innerHTML = Object.entries(LANGUAGES).map(([code, cfg]) => `
             <div class="lang-modal-item flex items-center gap-3 p-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-700 cursor-pointer transition-colors border border-transparent hover:border-slate-100 dark:hover:border-slate-600" data-lang="${code}">
-              <span class="pointer-events-none text-xl leading-none">${flagEmoji(cfg.flag)}</span>
+              ${flagImg(cfg.flag, 'w-6 rounded object-cover shadow-sm pointer-events-none')}
               <div class="flex-1 pointer-events-none">
                 <div class="text-sm font-semibold text-slate-800 dark:text-slate-100">${cfg.nativeName}</div>
               </div>
@@ -2173,7 +2174,7 @@
         const cfg = COUNTRIES[country] || COUNTRIES.FR;
         const flag = $('country-flag');
         const lbl = $('country-btn-label');
-        if (flag) flag.textContent = flagEmoji(cfg.flag);
+        if (flag) flag.innerHTML = flagImg(cfg.flag, 'w-6 h-4 rounded object-cover shadow-sm pointer-events-none');
         if (lbl) lbl.textContent = cfg.name;
         if (!langOverride) setLang(cfg.defaultLang);
         else updateSEOMeta();
