@@ -1,11 +1,11 @@
-const CACHE = 'iloveinvoice-v5';
+const CACHE = 'iloveinvoice-v6';
 const ASSETS = [
   '/',
   '/index.html',
   '/style.css',
+  '/tailwind.css',
   '/countries.js',
   '/app.js',
-  'https://cdn.tailwindcss.com',
   'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap',
   // html2pdf and pako are lazy-loaded on first use — cached automatically by fetch handler
 ];
