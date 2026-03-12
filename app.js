@@ -911,6 +911,22 @@
           return false;
         }
       }
+      const MAX_LOGO_PX = 400;
+      function resizeLogoBase64(dataUrl, callback) {
+        const img = new Image();
+        img.onload = () => {
+          const scale = Math.min(1, MAX_LOGO_PX / Math.max(img.width, img.height));
+          const w = Math.round(img.width * scale);
+          const h = Math.round(img.height * scale);
+          const canvas = document.createElement('canvas');
+          canvas.width = w; canvas.height = h;
+          canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+          callback(canvas.toDataURL('image/png', 0.9));
+        };
+        img.onerror = () => callback(dataUrl);
+        img.src = dataUrl;
+      }
+
       // ── CDN URLs ────────────────────────────────────────────
       const CDN_HTML2PDF = 'https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js';
       const CDN_PAKO     = 'https://cdn.jsdelivr.net/npm/pako@2.1.0/dist/pako.min.js';
@@ -3057,7 +3073,13 @@
         const file = this.files[0];
         if (!file) return;
         const reader = new FileReader();
-        reader.onload = e => { logoB64 = e.target.result; applyLogoUI(); saveEmetteur(); };
+        reader.onload = e => {
+          resizeLogoBase64(e.target.result, resized => {
+            logoB64 = resized;
+            applyLogoUI();
+            saveEmetteur();
+          });
+        };
         reader.readAsDataURL(file);
       });
 
