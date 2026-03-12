@@ -912,7 +912,22 @@
       }
 
       function esc(s) {
+        if (s == null) return '';
         return String(s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/'/g, '&#39;');
+      }
+      function safeUrl(url) {
+        if (!url) return '';
+        const s = String(url).trim();
+        if (/^(javascript|data|vbscript):/i.test(s)) return '#';
+        if (/^(mailto:|tel:)/i.test(s)) return esc(s);
+        if (/^https?:\/\//i.test(s)) return esc(s);
+        return esc('https://' + s);
+      }
+      function flagEmoji(iso2) {
+        if (!iso2) return '🌐';
+        return iso2.toUpperCase().replace(/./g,
+          c => String.fromCodePoint(0x1F1E6 - 65 + c.charCodeAt(0))
+        );
       }
       function calcLineAmount(ln) {
         const base = (parseFloat(ln.qty) || 0) * (parseFloat(ln.pu) || 0);
@@ -1124,7 +1139,7 @@
           siretHTML: val('e-siret') ? `${esc(cfg.issuerIdLabel)} ${esc(val('e-siret'))}` : '',
           addrHTML: val('e-address') ? esc(val('e-address')) : '',
           emailE: val('e-email') ? esc(val('e-email')) : '',
-          webHTML: val('e-web') ? esc(val('e-web')) : '',
+          webHTML: val('e-web') ? safeUrl(val('e-web')) : '',
           cName: val('c-name') || '—',
           cBilling: val('c-billing') || '',
           sirenC: val('c-siren') ? `${esc(cfg.clientIdLabel)} ${esc(val('c-siren'))}` : '',
