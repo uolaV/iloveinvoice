@@ -1920,7 +1920,7 @@
         if (langCfg) {
           const lf = $('lang-flag');
           const ll = $('lang-btn-label');
-          if (lf) lf.src = `https://flagcdn.com/w40/${langCfg.flag}.png`;
+          if (lf) lf.textContent = flagEmoji(langCfg.flag);
           if (ll) ll.textContent = lang.toUpperCase();
         }
 
@@ -2015,7 +2015,7 @@
       function countryItemHTML(code, cfg) {
         const check = country === code ? '<svg class="w-5 h-5 text-brand-500 pointer-events-none shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>' : '';
         return `<div class="country-modal-item flex items-center gap-3 p-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-700 cursor-pointer transition-colors border border-transparent hover:border-slate-100 dark:hover:border-slate-600" data-code="${code}" data-name="${cfg.name.toLowerCase()}" data-search="${code.toLowerCase()} ${cfg.name.toLowerCase()} ${cfg.currency.toLowerCase()} ${cfg.taxName.toLowerCase()}">
-          <img src="https://flagcdn.com/w40/${cfg.flag}.png" alt="${code}" class="w-6 h-4.5 rounded object-cover shadow-sm pointer-events-none" loading="lazy" />
+          <span class="pointer-events-none text-xl leading-none">${flagEmoji(cfg.flag)}</span>
           <div class="flex-1 pointer-events-none min-w-0">
             <div class="text-sm font-semibold text-slate-800 dark:text-slate-100 truncate">${cfg.name}</div>
             <div class="text-[10px] text-slate-400 dark:text-slate-500 font-medium">${cfg.currencySymbol} \u00b7 ${cfg.taxName}</div>
@@ -2126,7 +2126,7 @@
         if (!list) return;
         list.innerHTML = Object.entries(LANGUAGES).map(([code, cfg]) => `
             <div class="lang-modal-item flex items-center gap-3 p-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-700 cursor-pointer transition-colors border border-transparent hover:border-slate-100 dark:hover:border-slate-600" data-lang="${code}">
-              <img src="https://flagcdn.com/w40/${cfg.flag}.png" alt="${code}" class="w-6 rounded object-cover shadow-sm pointer-events-none" style="height:18px" />
+              <span class="pointer-events-none text-xl leading-none">${flagEmoji(cfg.flag)}</span>
               <div class="flex-1 pointer-events-none">
                 <div class="text-sm font-semibold text-slate-800 dark:text-slate-100">${cfg.nativeName}</div>
               </div>
@@ -2173,7 +2173,7 @@
         const cfg = COUNTRIES[country] || COUNTRIES.FR;
         const flag = $('country-flag');
         const lbl = $('country-btn-label');
-        if (flag) flag.src = `https://flagcdn.com/w40/${cfg.flag}.png`;
+        if (flag) flag.textContent = flagEmoji(cfg.flag);
         if (lbl) lbl.textContent = cfg.name;
         if (!langOverride) setLang(cfg.defaultLang);
         else updateSEOMeta();
